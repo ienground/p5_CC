@@ -31,8 +31,8 @@ class Cloud {
         this.x += 1;
         this.y += nr;
 
-        if (this.x >= width) {
-            this.x = -20;
+        if (this.x >= width + 100) {
+            this.x = -100;
         }
     }
 }
@@ -153,20 +153,25 @@ class Shark {
             triangle(mx[0] - i * direction * this.size / 10, my[0], mx[0] - (i + 1) * direction * this.size / 10, my[0], mx[0] - (i + 0.5) * direction * this.size / 10, my[0] + this.size / 20);
             triangle(mx[1] - i * direction * this.size / 10, my[1], mx[1] - (i + 1) * direction * this.size / 10, my[1], mx[1] - (i + 0.5) * direction * this.size / 10, my[1] - this.size / 20);
         }
-        translate(0, 0);
+        translate(-this.x, -this.y);
     }
 
     move() {
         this.x += this.vx;
         this.y += this.vy;
         this.count += this.vcount;
-        if (this.x < 0 || this.x > windowWidth) {
+
+        let preVx = this.vx;
+        let preVy = this.vy;
+
+        if (this.x < 0 || this.x > width) {
             this.vx = -this.vx;
         }
 
-        if (this.y < 0 || this.y > windowHeight) {
+        if (this.y < height * 2 / 3 || this.y > height) {
             this.vy = -this.vy;
         }
+
 
         if (this.count > 100 || this.count < 0) {
             this.vcount = -this.vcount;
@@ -189,23 +194,25 @@ class Ship {
         push();
         translate(width / 2, height / 2);
 
+        angleMode(RADIANS);
         if (this.wave1 > this.wave2) {
             rotate(this.wave2 - this.wave1);
         } else {
             rotate(this.wave1 - this.wave2);
         }
+        angleMode(DEGREES);
 
         noStroke();
         fill('#663A32A8');
 
         beginShape();
-        vertex(-100, 90 + this.shy);
-        vertex(100, 90 + this.shy);
-        vertex(130, 30 + this.shy);
-        vertex(-130, 30 + this.shy);
+        vertex(-100, 90 + this.shy * 2);
+        vertex(100, 90 + this.shy * 2);
+        vertex(130, 30 + this.shy * 2);
+        vertex(-130, 30 + this.shy * 2);
         endShape();
 
-        translate(0, 0);
+        translate(-width / 2, -height / 2);
         pop();
     }
 }
@@ -232,8 +239,16 @@ function setup() {
     blue = color('#1E78F0')
     sky = color('#7DCDf5')
 
-    for (let i = 0; i < 4; i++) {
-        clouds.push(new Cloud(random(0, width), random(0, height / 4)));
+    for (let i = 0; i < 25; i++) {
+        clouds.push(new Cloud(random(-100, width + 100), random(0, height / 4)));
+    }
+
+    for (let i = 0; i < 3; i++) {
+        sharks.push(new Shark(35, 500, 500, random(-10, 10), random(-10, 10), 0));
+    }
+
+    for (let i = 0; i < sharks.length; i++) {
+        print(i + ":" + sharks[i].x + ", " + sharks[i].y);
     }
 
     // Sound Setting
@@ -245,11 +260,6 @@ function setup() {
 
     amp = new p5.Amplitude();
     amp.setInput(mic);
-
-    // skyLayer = createGraphics(width, height);
-    // skyLayer.colorMode(HSB, 360, 100, 100, 100);
-    // colorMode(HSB, 360, 100, 100, 100);
-
 }
 
 function draw() {
@@ -260,6 +270,8 @@ function draw() {
 
     setBackground();
     setCloud();
+
+    // wave and boat
 
     let waveform = fft.waveform();
     let wave1 = waveform[500];
@@ -281,16 +293,28 @@ function draw() {
         ship.render()
     }
 
-    let x, y;
+
+
     for (let i = 0; i < waveform.length; i++) {
-        x = map(i, 0, waveform.length, -25, width + 25);
-        y = map(waveform[i] * 3, -1, 1, height / 4 * 3, height / 2);
+        let x = map(i, 0, waveform.length, -25, width + 25);
+        let y = map(waveform[i] * 3, -1, 1, height / 4 * 3, height / 2);
         let h = map(waveform[i], -1, 1, 150, 290);
 
         noStroke();
         fill('#00AAFF0D');
         rect(x, y, 10, height / 2, 20);
+
+        if (frameCount % 60 === 0) {
+            print(i + ": " + waveform[i]);
+        }
     }
+
+    // sharks
+    for (let i = 0; i < sharks.length; i++) {
+        sharks[i].move();
+        sharks[i].draw();
+    }
+
 }
 
 function setBackground() {

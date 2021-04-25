@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d70e72c5-16ed-4bd4-972f-4e133c383f08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/aaron-krogh-music_the-world-map.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ttan.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libraries/p5.js" beforeDir="false" afterPath="$PROJECT_DIR$/libraries/p5.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +67,7 @@
       <workItem from="1618741198453" duration="5137000" />
       <workItem from="1619111743312" duration="17005000" />
       <workItem from="1619243532414" duration="24318000" />
-      <workItem from="1619336210658" duration="4981000" />
+      <workItem from="1619336210658" duration="7986000" />
     </task>
     <task id="LOCAL-00001" summary="210424_p5_CC&#10;Shark Animation">
       <created>1619329987633</created>
@@ -93,7 +90,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619334424903</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="210424_p5_CC&#10;바다 + 배 합침.">
+      <created>1619341391606</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1619341391607</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,7 +120,8 @@
     <MESSAGE value="210424_p5_CC&#10;Shark Animation" />
     <MESSAGE value="210424_p5_CC&#10;Background - time : 0.1s" />
     <MESSAGE value="210424_p5_CC&#10;구름 합침" />
-    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;구름 합침" />
+    <MESSAGE value="210424_p5_CC&#10;바다 + 배 합침." />
+    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;바다 + 배 합침." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
