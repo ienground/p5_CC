@@ -66,7 +66,7 @@
       <workItem from="1618741198453" duration="5137000" />
       <workItem from="1619111743312" duration="17005000" />
       <workItem from="1619243532414" duration="24318000" />
-      <workItem from="1619336210658" duration="17938000" />
+      <workItem from="1619336210658" duration="20172000" />
     </task>
     <task id="LOCAL-00001" summary="210424_p5_CC&#10;Shark Animation">
       <created>1619329987633</created>
@@ -117,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619355662408</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="210425_p5_CC&#10;Time and sun moon direction fix. and shark anger add">
+      <created>1619359183818</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1619359183818</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,7 +151,8 @@
     <MESSAGE value="210424_p5_CC&#10;상어 추가" />
     <MESSAGE value="210424_p5_CC&#10;Add Person, sun, moon, skylight." />
     <MESSAGE value="210424_p5_CC&#10;Resolution Fix." />
-    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;Resolution Fix." />
+    <MESSAGE value="210425_p5_CC&#10;Time and sun moon direction fix. and shark anger add" />
+    <option name="LAST_COMMIT_MESSAGE" value="210425_p5_CC&#10;Time and sun moon direction fix. and shark anger add" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

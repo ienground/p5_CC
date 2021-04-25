@@ -191,20 +191,22 @@ class Shark {
         }
     }
 
-    jump(px, py) {}
+    jump(px, py) {
+
+    }
 }
 
 class Ship {
-    constructor(shy, wave1, wave2) {
+    constructor(shy, wave1, wave2, isReversed) {
         this.shy = shy;
         this.wave1 = wave1;
         this.wave2 = wave2;
+        this.isReversed = isReversed;
     }
 
     render() {
         push();
         translate(width / 2, height / 1.9);
-
         angleMode(RADIANS);
         if (this.wave1 > this.wave2) {
             rotate(this.wave2 - this.wave1);
@@ -217,10 +219,17 @@ class Ship {
         fill('#663A32A8');
 
         beginShape();
-        vertex(-100, 90 + this.shy * 2);
-        vertex(100, 90 + this.shy * 2);
-        vertex(130, 30 + this.shy * 2);
-        vertex(-130, 30 + this.shy * 2);
+        if (!this.isReversed) {
+            vertex(-100, 90 + this.shy * 2);
+            vertex(100, 90 + this.shy * 2);
+            vertex(130, 30 + this.shy * 2);
+            vertex(-130, 30 + this.shy * 2);
+        } else {
+            vertex(-100, 30 + this.shy * 2);
+            vertex(100, 30 + this.shy * 2);
+            vertex(130, 90 + this.shy * 2);
+            vertex(-130, 90 + this.shy * 2);
+        }
         endShape();
 
         translate(-width / 2, -height / 2);
@@ -240,6 +249,10 @@ class Simpson {
         this.y = y;
         this.size = size;
         this.angle = angle;
+    }
+
+    setSize(size) {
+        this.size = size;
     }
 
     render() {
@@ -422,6 +435,8 @@ let mic, fft, amp;
 let shipup;
 let shipMove = [];
 let charMove = [];
+let charSize = 0.33;
+let boatReversed = false;
 
 function preload() {
     sound1 = loadSound('./src/ttan.mp3');
@@ -482,8 +497,8 @@ function draw() {
     let minShipup = 9999999;
 
     for (let i = 0; i < 10; i++) {
-        shipMove[i] = new Ship(2 * shipup, wave1, wave2);
-        charMove[i] = new Simpson(width / 2, 370 / 658 * height + 2 * shipup, 0.33, 0);
+        shipMove[i] = new Ship(2 * shipup, wave1, wave2, boatReversed);
+        charMove[i] = new Simpson(width / 2, 370 / 658 * height + 2 * shipup, charSize, 0);
         fill(0);
         text(shipup, width / 2 - 200, height / 2);
 
@@ -525,6 +540,17 @@ function draw() {
         }
         sharks[i].move();
         sharks[i].draw();
+    }
+
+    // die
+    if (maxShipup >= 20 || minShipup <= -20) {
+        for (let char of charMove) {
+            charSize = 0.0001;
+        }
+
+        for (let boat of shipMove) {
+            boatReversed = true;
+        }
     }
 }
 
@@ -590,9 +616,9 @@ function setBackground() {
     let angle = (timer % 400) * 360 / 400;
 
     let x1 = width / 2 + cos( 90 - 125 * 360 / 400 + angle) * width / 5;
-    let y1 = height / 2 + sin( 90 - 125 * 360 / 400 + angle) * width / 5;
+    let y1 = height / 2 + height / 8 + sin( 90 - 125 * 360 / 400 + angle) * width / 5;
     let x2 = width / 2 + cos( 270 - 125 * 360 / 400 + angle) * width / 5;
-    let y2 = height / 2 + sin( 270 - 125 * 360 / 400 + angle) * width / 5;
+    let y2 = height / 2 + height / 8 + sin( 270 - 125 * 360 / 400 + angle) * width / 5;
 
     noStroke();
     fill(255, 165, 0, 50);
