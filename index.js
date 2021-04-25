@@ -5,6 +5,37 @@
  * Jaewoo Park
  * Minki Jo
  */
+class Cloud {
+    p = 0;
+
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    display() {
+        stroke(255);
+        strokeWeight(1);
+        fill(255);
+        ellipse(this.x, this.y, 32, 12);
+        ellipse(this.x + 10, this.y + 5, 24, 15);
+        ellipse(this.x + 30, this.y + 5, 24, 15);
+        ellipse(this.x + 30, this.y - 5, 24, 10);
+        ellipse(this.x + 20, this.y - 5, 24, 15);
+        ellipse(this.x + 40, this.y, 32, 14);
+    }
+
+    move() {
+        this.p += 0.01;
+        const nr = 0.5 - noise(this.p);
+        this.x += 1;
+        this.y += nr;
+
+        if (this.x >= width) {
+            this.x = -20;
+        }
+    }
+}
 
 class Shark {
     anger = 0;
@@ -143,37 +174,39 @@ class Shark {
     }
 }
 
-class Bubble {
-    p = 0;
-
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    display() {
-        // translate(this.x, this.y);
-
-        stroke(255);
-        strokeWeight(1);
-        fill(255);
-        ellipse(this.x, this.y, 32, 12);
-        ellipse(this.x + 10, this.y + 5, 24, 15);
-        ellipse(this.x + 30, this.y + 5, 24, 15);
-        ellipse(this.x + 30, this.y - 5, 24, 10);
-        ellipse(this.x + 20, this.y - 5, 24, 15);
-        ellipse(this.x + 40, this.y, 32, 14);
+class Ship {
+    constructor(shy, wave1, wave2) {
+        this.shy = shy;
+        this.wave1 = wave1;
+        this.wave2 = wave2;
     }
 
     move() {
-        this.p += 0.01;
-        const nr = 0.5 - noise(this.p);
-        this.x += 1;
-        this.y += nr;
 
-        if (this.x >= width) {
-            this.x = -20;
+    }
+
+    render() {
+        push();
+        translate(width / 2, height / 2);
+
+        if (this.wave1 > this.wave2) {
+            rotate(this.wave2 - this.wave1);
+        } else {
+            rotate(this.wave1 - this.wave2);
         }
+
+        noStroke();
+        fill('#663A32A8');
+
+        beginShape();
+        vertex(-100, 90 + this.shy);
+        vertex(100, 90 + this.shy);
+        vertex(130, 30 + this.shy);
+        vertex(-130, 30 + this.shy);
+        endShape();
+
+        translate(0, 0);
+        pop();
     }
 }
 
@@ -181,6 +214,15 @@ let navy, orange, blue, sky;
 let timer = 0;
 let sharks = [];
 let clouds = [];
+
+let sound1;
+let mic, fft, amp;
+let shipup;
+let shipMove = [];
+
+function preload() {
+    sound1 = loadSound('./src/ttan.mp3');
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -191,8 +233,23 @@ function setup() {
     sky = color('#7DCDf5')
 
     for (let i = 0; i < 4; i++) {
-        clouds.push(new Bubble(random(0, width), random(0, height / 4)));
+        clouds.push(new Cloud(random(0, width), random(0, height / 4)));
     }
+
+    // Sound Setting
+    mic = new p5.AudioIn();
+    mic.start();
+
+    fft = new p5.FFT();
+    fft.setInput(mic);
+
+    amp = new p5.Amplitude();
+    amp.setInput(mic);
+
+    // skyLayer = createGraphics(width, height);
+    // skyLayer.colorMode(HSB, 360, 100, 100, 100);
+    // colorMode(HSB, 360, 100, 100, 100);
+
 }
 
 function draw() {
@@ -204,9 +261,40 @@ function draw() {
     setBackground();
     setCloud();
 
+    let waveform = fft.waveform();
+    let wave1 = waveform[500];
+    let wave2 = waveform[530];
+
+    shipup = map(wave1 * 3, -1, 1, -70, 80);
+
+    let down = width / 1024;
+    let wave1_down = down * 511;
+    let wave2_down = down * 513;
+
+    let at = atan2(wave2, wave2_down);
+
+    for (let i = 0; i < 10; i++) {
+        shipMove[i] = new Ship(shipup, wave1, wave2);
+    }
+
+    for (let ship of shipMove) {
+        ship.render()
+    }
+
+    let x, y;
+    for (let i = 0; i < waveform.length; i++) {
+        x = map(i, 0, waveform.length, -25, width + 25);
+        y = map(waveform[i] * 3, -1, 1, height / 4 * 3, height / 2);
+        let h = map(waveform[i], -1, 1, 150, 290);
+
+        noStroke();
+        fill('#00AAFF0D');
+        rect(x, y, 10, height / 2, 20);
+    }
 }
 
 function setBackground() {
+    colorMode(RGB, 255);
     let startColor;
     if (timer % 400 > 0 && timer % 400 < 50) {
         startColor = lerpColor(blue, navy, (timer % 400) / 50);

@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d70e72c5-16ed-4bd4-972f-4e133c383f08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/cloud.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aaron-krogh-music_the-world-map.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ttan.mp3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SoundSample.js" beforeDir="false" afterPath="$PROJECT_DIR$/SoundSample.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libraries/p5.js" beforeDir="false" afterPath="$PROJECT_DIR$/libraries/p5.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,13 +44,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libraries/p5.sound.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libraries" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
     <property name="ts.external.directory.path" value="C:\Users\erica\AppData\Local\JetBrains\Toolbox\apps\WebStorm\ch-0\211.6693.108\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\erica\Desktop\2021년 2학년 1학기\Intro to Creative Computing\p5_CC\libraries" />
+      <recent name="C:\Users\erica\Desktop\2021년 2학년 1학기\Intro to Creative Computing\p5_CC\src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\erica\Desktop\2021년 2학년 1학기\Intro to Creative Computing\SoundSample\libraries" />
     </key>
@@ -63,7 +69,8 @@
       <updated>1618741197184</updated>
       <workItem from="1618741198453" duration="5137000" />
       <workItem from="1619111743312" duration="17005000" />
-      <workItem from="1619243532414" duration="22629000" />
+      <workItem from="1619243532414" duration="24318000" />
+      <workItem from="1619336210658" duration="4981000" />
     </task>
     <task id="LOCAL-00001" summary="210424_p5_CC&#10;Shark Animation">
       <created>1619329987633</created>
@@ -79,7 +86,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619333453692</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="210424_p5_CC&#10;구름 합침">
+      <created>1619334424903</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1619334424903</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -98,9 +112,11 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="210424_p5_CC&#10;Shark Animation" />
     <MESSAGE value="210424_p5_CC&#10;Background - time : 0.1s" />
-    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;Background - time : 0.1s" />
+    <MESSAGE value="210424_p5_CC&#10;구름 합침" />
+    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;구름 합침" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
