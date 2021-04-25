@@ -5,6 +5,21 @@
  * Jerry Park
  * Minki Jo
  */
+
+let navy, orange, blue, sky;
+let timer = 125;
+let sharks = [];
+let sharksJump = [];
+let clouds = [];
+
+let sound1;
+let mic, fft, amp;
+let shipup;
+let shipMove = [];
+let charMove = [];
+let charSize = 0.33;
+let boatReversed = false;
+
 class Cloud {
     p = 0;
 
@@ -44,6 +59,8 @@ class Shark {
     ivx = 0;
     ivy = 0;
     i = 0;
+    kx = 0;
+    ky = 0;
 
     constructor(size, x, y, vx, vy, angle) {
         this.size = size;
@@ -190,26 +207,39 @@ class Shark {
         if (this.count > 100 || this.count < 0) {
             this.vcount = -this.vcount;
         }
+
+        if (this.i === 0) {
+            this.kx = this.x;
+            this.ky = this.y;
+        }
     }
 
     jump(px, py) {
-        if (dist(px, py, this.x, this.y) <= this.size * 10) {
+        if (dist(px, py, this.kx, this.ky) <= this.size * 5) {
             print("fjump");
 
-            let kx = this.x;
-            let ky = this.y;
+            if (this.i === 0) {
+                this.kx = this.x;
+                this.ky = this.y;
+            }
 
             if (this.i <= 10) {
                 let t = this.i / 10;
 
-                let x = bezierPoint(kx, (kx + px) / 2, (kx + px) / 2, px, t);
-                let y = bezierPoint(ky, abs(ky - py) / 2, abs(ky - py) / 2, py, t);
+                let x = bezierPoint(this.kx, (this.kx + px) * 0.6, (this.kx + px) * 0.6, px, t);
+                let y = bezierPoint(this.ky, abs(this.ky - py) / 2, abs(this.ky - py) / 2, py, t);
 
                 this.x = x;
                 this.y = y;
 
                 this.i++;
             }
+
+            if (this.i === 10) {
+                boatReversed = true;
+                charSize = 0.0001;
+            }
+            // dk
         }
     }
 }
@@ -443,20 +473,6 @@ class Simpson {
     }
 }
 
-let navy, orange, blue, sky;
-let timer = 125;
-let sharks = [];
-let sharksJump = [];
-let clouds = [];
-
-let sound1;
-let mic, fft, amp;
-let shipup;
-let shipMove = [];
-let charMove = [];
-let charSize = 0.33;
-let boatReversed = false;
-
 function preload() {
     sound1 = loadSound('./src/ttan.mp3');
 }
@@ -557,7 +573,7 @@ function draw() {
     }
 
     for (let i = 0; i < sharksJump.length; i++) {
-        if (maxShipup <= 6 && dist(charX, charY, sharks[i].x, sharks[i].y) <= sharks[i].size * 10) {
+        if (maxShipup <= 6 && dist(charX, charY, sharks[i].kx, sharks[i].ky) <= sharks[i].size * 5 || sharks[i].i !== 0) {
             sharksJump[i] = true;
         } else {
             sharksJump[i] = false;
