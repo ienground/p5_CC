@@ -2,7 +2,7 @@
  * Team
  * Developed, Designed By
  * IENGROUND github.com/ienground
- * Jaewoo Park
+ * Jerry Park
  * Minki Jo
  */
 class Cloud {
@@ -34,6 +34,54 @@ class Cloud {
         if (this.x >= width + 100) {
             this.x = -100;
         }
+    }
+}
+
+class Sun {
+    constructor(cx, cy) {
+        this.cx = cx;
+        this.cy = cy;
+    }
+
+    update(time) {
+        this.time = time;
+        this.angle = (this.time % 400) * 360 / 400;
+
+        this.x = this.cx + cos(225 - this.angle) * width / 3;
+        this.y = this.cy + sin(225 - this.angle) * width / 3;
+    }
+
+    draw() {
+        noStroke();
+        fill(255, 165, 0, 50);
+        circle(this.x, this.y, 100);
+
+        fill(255, 100, 0, 100);
+        circle(this.x, this.y, 70);
+    }
+}
+
+class Moon {
+    constructor(cx, cy) {
+        this.cx = cx;
+        this.cy = cy;
+    }
+
+    update(time) {
+        this.time = time;
+        this.angle = (this.time % 400) * 360 / 400;
+
+        this.x = this.cx + cos(45 - this.angle) * width / 3;
+        this.y = this.cy + sin(45 - this.angle) * width / 3;
+    }
+
+    draw() {
+        noStroke();
+        fill(255, 255, 255, 50);
+        circle(this.x, this.y, 100);
+
+        fill(255, 255, 255, 100);
+        circle(this.x, this.y, 70);
     }
 }
 
@@ -153,7 +201,9 @@ class Shark {
             triangle(mx[0] - i * direction * this.size / 10, my[0], mx[0] - (i + 1) * direction * this.size / 10, my[0], mx[0] - (i + 0.5) * direction * this.size / 10, my[0] + this.size / 20);
             triangle(mx[1] - i * direction * this.size / 10, my[1], mx[1] - (i + 1) * direction * this.size / 10, my[1], mx[1] - (i + 0.5) * direction * this.size / 10, my[1] - this.size / 20);
         }
+        rotate(-this.angle);
         translate(-this.x, -this.y);
+
     }
 
     move() {
@@ -213,19 +263,205 @@ class Ship {
         endShape();
 
         translate(-width / 2, -height / 2);
+        if (this.wave1 <= this.wave2) {
+            rotate(this.wave2 - this.wave1);
+        } else {
+            rotate(this.wave1 - this.wave2);
+        }
+
         pop();
     }
 }
 
+class Simpson {
+    constructor(x, y, size, angle) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.angle = angle;
+    }
+
+    render() {
+        translate(this.x, this.y)
+
+        strokeWeight(5);
+        stroke(0);
+        fill(255, 255, 0)
+
+        scale(this.size);
+        rotate(this.angle);
+
+        beginShape();
+        curveVertex(120, -390); //hair
+        curveVertex(90, -380);
+        curveVertex(85, -395);
+        curveVertex(80, -380);
+        curveVertex(70, -395);
+        curveVertex(60, -380);
+        curveVertex(40, -395);
+        curveVertex(31, -380);
+        curveVertex(20, -395);
+        curveVertex(10, -380);
+        curveVertex(-5, -395);
+        curveVertex(-20, -365);
+        curveVertex(-30, -380);
+        curveVertex(-40, -350);
+        curveVertex(-50, -370);
+        curveVertex(-60, -350);
+        curveVertex(-70, -360);
+
+        curveVertex(-50, -170); //ear
+        curveVertex(-30, -160);
+        curveVertex(-50, -170);
+        curveVertex(-60, -150);
+        curveVertex(-30, -160);
+        curveVertex(-40, -160);
+
+        curveVertex(-40, -70); //neck
+        curveVertex(-20, -40);
+        curveVertex(40, -45);
+        curveVertex(45, -85);
+
+        curveVertex(45, -80);//mouth
+        curveVertex(50, -85);
+        curveVertex(60, -90);
+        curveVertex(0, -100);
+        curveVertex(60, -90);
+        curveVertex(140, -110);
+
+        curveVertex(130, -140); //front
+        curveVertex(128, -170);
+        curveVertex(120, -240);
+        curveVertex(120, -390);
+
+        endShape();
+
+        beginShape();
+        fill(255, 255, 0); //nose
+        stroke(0);
+        strokeWeight(5);
+
+        curveVertex(80, -170);
+        curveVertex(90, -168);
+        curveVertex(100, -170);
+        curveVertex(115, -172);
+        curveVertex(120, -175);
+        curveVertex(128, -172);
+        curveVertex(135, -165);
+        curveVertex(138, -160);
+        curveVertex(138, -154);
+        curveVertex(130, -140);
+        curveVertex(110, -135);
+        curveVertex(100, -135);
+        curveVertex(90, -135);
+        endShape();
+
+        //eye bigger
+        fill(255)
+        ellipse(110, -210, 80, 80);
+        ellipse(40, -210, 80, 80);
+
+        //eye smaller
+        fill(0);
+        ellipse(40, -210, 10, 10);
+        ellipse(110, -210, 10, 10);
+
+        beginShape();
+        curveVertex(-65, 6);
+        curveVertex(-35, 6);
+        curveVertex(-32, 41);
+        curveVertex(-30, 90);
+        curveVertex(-50, 90);
+        curveVertex(-65, 6);
+        endShape();
+
+        beginShape();
+        fill(235, 155, 0);// 목이 시작되는 지점
+        curveVertex(-89, 90);
+        curveVertex(-90, 90);
+        curveVertex(-80, 45);
+        curveVertex(-65, 6);
+        curveVertex(-51, -40);
+        curveVertex(-50, -60);
+        curveVertex(-40, -69);
+        curveVertex(-20, -40);
+        curveVertex(40, -45);
+        curveVertex(35, -30);
+        curveVertex(50, -20);
+        curveVertex(60, 15);
+        curveVertex(70, 49);
+        curveVertex(76, 90);
+        curveVertex(50, 90);
+        curveVertex(-88, 90);
+        curveVertex(-89, 90);
+        endShape();
+
+        beginShape();//왼쪽 옷
+        fill(235, 155, 0);
+        curveVertex(-78, 5);
+        curveVertex(-80, 5);
+        curveVertex(-68, -38);
+        curveVertex(-50, -38);
+        curveVertex(-50, -60);
+        curveVertex(-30, -30);
+        curveVertex(-19, -15);
+        curveVertex(-15, -2);
+        curveVertex(-35, 5);
+        curveVertex(-77, 5);
+        curveVertex(-78, 5);
+        endShape();
+
+
+        beginShape();//노랑 오른쪽팔
+        fill(255, 255, 0);
+        curveVertex(70, 0);
+        curveVertex(70, 1);
+        curveVertex(70, 2);
+        curveVertex(70, 49);
+        curveVertex(60, 10);
+        curveVertex(70, 0);
+        endShape();
+
+        beginShape();//노랑 왼쪽팔
+        fill(255, 255, 0);
+        curveVertex(-63, 6);
+        curveVertex(-65, 6);
+        curveVertex(-70, 90);
+        curveVertex(-30, 90);
+        curveVertex(-34, 5);
+        curveVertex(-64, 6);
+        curveVertex(-63, 6);
+        endShape();
+
+        beginShape();//오른쪽팔
+        fill(235, 155, 0);
+        curveVertex(70, 0);
+        curveVertex(70, 1);
+        curveVertex(65, 10);
+        curveVertex(60, 15);
+        curveVertex(50, -10);
+        curveVertex(70, -1);
+        curveVertex(70, 0);
+        endShape();
+
+        rotate(-this.angle);
+        scale(1 / this.size);
+        translate(-this.x, -this.y);
+
+    }
+}
+
 let navy, orange, blue, sky;
-let timer = 0;
+let timer = 200;
 let sharks = [];
 let clouds = [];
+let sun, moon;
 
 let sound1;
 let mic, fft, amp;
 let shipup;
 let shipMove = [];
+let charMove = [];
 
 function preload() {
     sound1 = loadSound('./src/ttan.mp3');
@@ -246,6 +482,9 @@ function setup() {
     for (let i = 0; i < 3; i++) {
         sharks.push(new Shark(35, 500, 500, random(-10, 10), random(-10, 10), 0));
     }
+
+    sun = new Sun(width / 2, height / 2 + height / 8);
+    moon = new Moon(width / 2, height / 2 + height / 8);
 
     for (let i = 0; i < sharks.length; i++) {
         print(i + ":" + sharks[i].x + ", " + sharks[i].y);
@@ -269,6 +508,13 @@ function draw() {
     }
 
     setBackground();
+    sun.update(timer);
+    sun.draw();
+    moon.update(timer);
+    moon.draw();
+    fill('#13285a');
+    noStroke();
+    rect(0, height / 2 + height / 8, width, height / 2);
     setCloud();
 
     // wave and boat
@@ -287,13 +533,17 @@ function draw() {
 
     for (let i = 0; i < 10; i++) {
         shipMove[i] = new Ship(shipup, wave1, wave2);
+        charMove[i] = new Simpson(width / 2, 350 + shipup, 0.33, 0);
+        // charMove[i] = new Simpson(width / 2, 90 + this.shy * 2, 0.33, 0);
+    }
+
+    for (let char of charMove) {
+        char.render()
     }
 
     for (let ship of shipMove) {
         ship.render()
     }
-
-
 
     for (let i = 0; i < waveform.length; i++) {
         let x = map(i, 0, waveform.length, -25, width + 25);
@@ -305,7 +555,7 @@ function draw() {
         rect(x, y, 10, height / 2, 20);
 
         if (frameCount % 60 === 0) {
-            print(i + ": " + waveform[i]);
+            print(i + ":  " + waveform[i]);
         }
     }
 
@@ -314,7 +564,6 @@ function draw() {
         sharks[i].move();
         sharks[i].draw();
     }
-
 }
 
 function setBackground() {
