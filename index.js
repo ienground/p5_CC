@@ -37,58 +37,12 @@ class Cloud {
     }
 }
 
-class Sun {
-    constructor(cx, cy) {
-        this.cx = cx;
-        this.cy = cy;
-    }
-
-    update(time) {
-        this.time = time;
-        this.angle = (this.time % 400) * 360 / 400;
-
-        this.x = this.cx + cos(225 - this.angle) * width / 3;
-        this.y = this.cy + sin(225 - this.angle) * width / 3;
-    }
-
-    draw() {
-        noStroke();
-        fill(255, 165, 0, 50);
-        circle(this.x, this.y, 100);
-
-        fill(255, 100, 0, 100);
-        circle(this.x, this.y, 70);
-    }
-}
-
-class Moon {
-    constructor(cx, cy) {
-        this.cx = cx;
-        this.cy = cy;
-    }
-
-    update(time) {
-        this.time = time;
-        this.angle = (this.time % 400) * 360 / 400;
-
-        this.x = this.cx + cos(45 - this.angle) * width / 3;
-        this.y = this.cy + sin(45 - this.angle) * width / 3;
-    }
-
-    draw() {
-        noStroke();
-        fill(255, 255, 255, 50);
-        circle(this.x, this.y, 100);
-
-        fill(255, 255, 255, 100);
-        circle(this.x, this.y, 70);
-    }
-}
-
 class Shark {
     anger = 0;
     count = 0;
     vcount = 1;
+    ivx = 0;
+    ivy = 0;
 
     constructor(size, x, y, vx, vy, angle) {
         this.size = size;
@@ -96,11 +50,17 @@ class Shark {
         this.y = y;
         this.vx = vx;
         this.vy = vy;
+        this.ivx = vx;
+        this.ivy = vy;
         this.angle = angle;
     }
 
     setAnger(anger) {
-        this.anger = anger;
+        if (anger <= 100) {
+            this.anger = anger;
+            this.vx = this.ivx * (1 + anger / 10);
+            this.vy = this.ivy * (1 + anger / 10);
+        }
     }
 
     getAnger() {
@@ -113,6 +73,8 @@ class Shark {
 
         translate(this.x, this.y);
         rotate(this.angle);
+
+        let sharkColor = lerpColor(color('#888888'), color('#ff4141'), this.anger / 100);
 
         fill('#FFFFFF');
 
@@ -142,7 +104,7 @@ class Shark {
             this.size * tan(20) / t
         ]
 
-        fill('#888888')
+        fill(sharkColor)
         triangle(px[0], py[0], px[1], py[1], px[5], py[5]); // 1
         fill('#FFFFFF')
         quad(px[1], py[1], px[2], py[2], px[4], py[4], px[5], py[5]);
@@ -160,7 +122,7 @@ class Shark {
         let level = map(this.count, 0, 100, 1, 2);
         let level2 = map(this.count, 0, 100, 1, 1.3);
         triangle(px[4], py[4], px[4] - direction * this.size / 2, py[4] - this.size / 2, px[4] - direction * this.size / level, py[4] + this.size / 2.5);
-        fill('#888888')
+        fill(sharkColor)
 
         // rear leg
         triangle(px[5], py[5], px[5] - direction * this.size / level2, py[5] + this.size / 3, px[5] - direction * this.size / 4, py[5] - this.size / 4);
@@ -172,7 +134,7 @@ class Shark {
         quad(px[1], py[1], px[1] + direction * this.size / 4, (2 * py[1] + py[5]) / 3, px[1] + direction * this.size / 4, (py[1] + 2 * py[5]) / 3, px[5], py[5]);
         quad(px[1], py[1], px[3], py[3], gray_x, gray_y, px[1] + direction * this.size / 4, (py[1] + 2 * py[5]) / 3)
 
-        fill('#888888')
+        fill(sharkColor)
 
         // tail
         triangle(px[0] + direction * this.size / 3, py[0] + this.size / 10, px[0] - direction * this.size / 1.5, py[0] - this.size, px[0] - direction * this.size / 2.5, py[0] - this.size / 5);
@@ -196,11 +158,15 @@ class Shark {
         quad(mx[0], my[0], mx[0] - direction * this.size / 2, my[0], mx[1] - direction * this.size / 2, my[1], mx[1], my[1]);
 
         stroke(0);
+        strokeWeight(this.size / 50);
         fill(255);
         for (let i = 0; i < 5; i++) {
             triangle(mx[0] - i * direction * this.size / 10, my[0], mx[0] - (i + 1) * direction * this.size / 10, my[0], mx[0] - (i + 0.5) * direction * this.size / 10, my[0] + this.size / 20);
             triangle(mx[1] - i * direction * this.size / 10, my[1], mx[1] - (i + 1) * direction * this.size / 10, my[1], mx[1] - (i + 0.5) * direction * this.size / 10, my[1] - this.size / 20);
         }
+        fill(0);
+        noStroke();
+        text(this.anger, 0, 0);
         rotate(-this.angle);
         translate(-this.x, -this.y);
 
@@ -224,6 +190,8 @@ class Shark {
             this.vcount = -this.vcount;
         }
     }
+
+    jump(px, py) {}
 }
 
 class Ship {
@@ -445,10 +413,9 @@ class Simpson {
 }
 
 let navy, orange, blue, sky;
-let timer = 200;
+let timer = 125;
 let sharks = [];
 let clouds = [];
-let sun, moon;
 
 let sound1;
 let mic, fft, amp;
@@ -475,9 +442,6 @@ function setup() {
         sharks.push(new Shark(35, width / 2, height / 2 + height / 4, random(-10, 10), random(-10, 10), 0));
     }
 
-    sun = new Sun(width / 2, height / 2 + height / 8);
-    moon = new Moon(width / 2, height / 2 + height / 8);
-
     // Sound Setting
     mic = new p5.AudioIn();
     mic.start();
@@ -497,10 +461,6 @@ function draw() {
 
     // set background and environment
     setBackground();
-    sun.update(timer);
-    sun.draw();
-    moon.update(timer);
-    moon.draw();
     fill('#13285a');
     noStroke();
     rect(0, height / 2 + height / 8, width, height / 2);
@@ -514,17 +474,26 @@ function draw() {
 
     shipup = map(wave1 * 3, -1, 1, -70, 80);
 
-    let down = width / 1024;
-    let wave1_down = down * 511;
-    let wave2_down = down * 513;
+    // let down = width / 1024;
+    // let wave1_down = down * 511;
+    // let wave2_down = down * 513;
 
-    let at = atan2(wave2, wave2_down);
+    let maxShipup = -1;
+    let minShipup = 9999999;
 
     for (let i = 0; i < 10; i++) {
-        shipMove[i] = new Ship(shipup, wave1, wave2);
-        charMove[i] = new Simpson(width / 2, 350 / 658 * height + shipup, 0.33, 0);
-        // charMove[i] = new Simpson(width / 2, 90 + this.shy * 2, 0.33, 0);
+        shipMove[i] = new Ship(2 * shipup, wave1, wave2);
+        charMove[i] = new Simpson(width / 2, 370 / 658 * height + 2 * shipup, 0.33, 0);
+        fill(0);
+        text(shipup, width / 2 - 200, height / 2);
 
+        if (shipup >= maxShipup) {
+            maxShipup = shipup;
+        }
+
+        if (shipup <= minShipup) {
+            minShipup = shipup;
+        }
     }
 
     for (let char of charMove) {
@@ -551,6 +520,9 @@ function draw() {
 
     // sharks
     for (let i = 0; i < sharks.length; i++) {
+        if (maxShipup >= 10 || minShipup <= -10) {
+            sharks[i].setAnger(sharks[i].getAnger() + 1);
+        }
         sharks[i].move();
         sharks[i].draw();
     }
@@ -614,6 +586,26 @@ function setBackground() {
             line(0, y, width, y);
         }
     }
+
+    let angle = (timer % 400) * 360 / 400;
+
+    let x1 = width / 2 + cos( 90 - 125 * 360 / 400 + angle) * width / 5;
+    let y1 = height / 2 + sin( 90 - 125 * 360 / 400 + angle) * width / 5;
+    let x2 = width / 2 + cos( 270 - 125 * 360 / 400 + angle) * width / 5;
+    let y2 = height / 2 + sin( 270 - 125 * 360 / 400 + angle) * width / 5;
+
+    noStroke();
+    fill(255, 165, 0, 50);
+    circle(x1, y1, 100);
+
+    fill(255, 100, 0, 100);
+    circle(x1, y1, 70);
+
+    fill(255, 255, 255, 50);
+    circle(x2, y2, 100);
+
+    fill(255, 255, 255, 100);
+    circle(x2, y2, 70);
 }
 
 function setCloud() {
