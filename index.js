@@ -43,6 +43,7 @@ class Shark {
     vcount = 1;
     ivx = 0;
     ivy = 0;
+    i = 0;
 
     constructor(size, x, y, vx, vy, angle) {
         this.size = size;
@@ -192,7 +193,24 @@ class Shark {
     }
 
     jump(px, py) {
+        if (dist(px, py, this.x, this.y) <= this.size * 10) {
+            print("fjump");
 
+            let kx = this.x;
+            let ky = this.y;
+
+            if (this.i <= 10) {
+                let t = this.i / 10;
+
+                let x = bezierPoint(kx, (kx + px) / 2, (kx + px) / 2, px, t);
+                let y = bezierPoint(ky, abs(ky - py) / 2, abs(ky - py) / 2, py, t);
+
+                this.x = x;
+                this.y = y;
+
+                this.i++;
+            }
+        }
     }
 }
 
@@ -428,6 +446,7 @@ class Simpson {
 let navy, orange, blue, sky;
 let timer = 125;
 let sharks = [];
+let sharksJump = [];
 let clouds = [];
 
 let sound1;
@@ -454,7 +473,8 @@ function setup() {
     }
 
     for (let i = 0; i < 3; i++) {
-        sharks.push(new Shark(35, width / 2, height / 2 + height / 4, random(-10, 10), random(-10, 10), 0));
+        sharks.push(new Shark(35, 0, height / 2 + height / 4, random(-10, 10), random(-10, 10), 0));
+        sharksJump.push(false);
     }
 
     // Sound Setting
@@ -527,31 +547,55 @@ function draw() {
         noStroke();
         fill('#00AAFF0D');
         rect(x, y, 10, height / 2, 20);
+    }
 
-        if (frameCount % 60 === 0) {
-            print(i + ":  " + waveform[i]);
+    let charX = 0, charY = 0;
+
+    for (let char of charMove) {
+        charX = char.x;
+        charY = char.y;
+    }
+
+    for (let i = 0; i < sharksJump.length; i++) {
+        if (maxShipup <= 6 && dist(charX, charY, sharks[i].x, sharks[i].y) <= sharks[i].size * 10) {
+            sharksJump[i] = true;
+        } else {
+            sharksJump[i] = false;
         }
     }
+
 
     // sharks
     for (let i = 0; i < sharks.length; i++) {
         if (maxShipup >= 10 || minShipup <= -10) {
             sharks[i].setAnger(sharks[i].getAnger() + 1);
         }
-        sharks[i].move();
+        if (frameCount % 60 === 0) {
+            print(sharksJump[i] + "/" + charX + "," + charY+":" + dist(charX, charY, sharks[i].x, sharks[i].y) + ", " + sharks[i].size);
+        }
+        if (!sharksJump[i]) {
+            if (frameCount % 60 === 0) {
+                print("move");
+            }
+            sharks[i].move();
+        } else {
+            if (frameCount % 60 === 0) {
+                print("jump");
+            }
+            sharks[i].jump(charX, charY);
+        }
+
         sharks[i].draw();
     }
 
     // die
     if (maxShipup >= 20 || minShipup <= -20) {
-        for (let char of charMove) {
-            charSize = 0.0001;
-        }
-
-        for (let boat of shipMove) {
-            boatReversed = true;
-        }
+        charSize = 0.0001;
+        boatReversed = true;
     }
+
+    // if (maxS)
+
 }
 
 function setBackground() {
@@ -639,4 +683,8 @@ function setCloud() {
         clouds[i].move();
         clouds[i].display();
     }
+}
+
+function drawBezier(x1, y1, x2, y2) {
+    bezier(x1, y1, (x1 + x2) / 2, abs(y1 - y2) / 2, (x1 + x2) / 2, abs(y1 - y2) / 2, x2, y2);
 }
