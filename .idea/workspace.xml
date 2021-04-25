@@ -66,7 +66,7 @@
       <workItem from="1618741198453" duration="5137000" />
       <workItem from="1619111743312" duration="17005000" />
       <workItem from="1619243532414" duration="24318000" />
-      <workItem from="1619336210658" duration="26094000" />
+      <workItem from="1619336210658" duration="29276000" />
     </task>
     <task id="LOCAL-00001" summary="210424_p5_CC&#10;Shark Animation">
       <created>1619329987633</created>
@@ -145,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619372072382</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="210425_p5_CC&#10;add shark path">
+      <created>1619373820204</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1619373820204</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,7 +183,8 @@
     <MESSAGE value="210425_p5_CC&#10;Boat Reverse" />
     <MESSAGE value="210425_p5_CC&#10;Sharks Jump" />
     <MESSAGE value="210425_p5_CC&#10;Finish" />
-    <option name="LAST_COMMIT_MESSAGE" value="210425_p5_CC&#10;Finish" />
+    <MESSAGE value="210425_p5_CC&#10;add shark path" />
+    <option name="LAST_COMMIT_MESSAGE" value="210425_p5_CC&#10;add shark path" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

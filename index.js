@@ -569,51 +569,38 @@ function draw() {
     }
 
     let charX = 0, charY = 0;
+    let volume = fft.analyze()[10];
+    fill(255);
+    textSize(24);
+    textAlign(CENTER);
 
     for (let char of charMove) {
         charX = char.x;
         charY = char.y;
     }
 
-    for (let i = 0; i < sharksJump.length; i++) {
-        if (maxShipup <= 6 && dist(charX, charY, sharks[i].kx, sharks[i].ky) <= sharks[i].size * 5 || sharks[i].i !== 0) {
-            sharksJump[i] = true;
-        } else {
-            sharksJump[i] = false;
-        }
-    }
+    text(volume, charX, charY + 40);
 
+    for (let i = 0; i < sharksJump.length; i++) {
+        sharksJump[i] = volume <= 150 && dist(charX, charY, sharks[i].kx, sharks[i].ky) <= sharks[i].size * 5 || sharks[i].i !== 0;
+    }
 
     // sharks
     for (let i = 0; i < sharks.length; i++) {
-        if (maxShipup >= 10 || minShipup <= -10) {
+        if (volume >= 200) {
             sharks[i].setAnger(sharks[i].getAnger() + 1);
         }
-        if (frameCount % 60 === 0) {
-            print(sharksJump[i] + "/" + charX + "," + charY+":" + dist(charX, charY, sharks[i].x, sharks[i].y) + ", " + sharks[i].size);
-        }
         if (!sharksJump[i]) {
-            if (frameCount % 60 === 0) {
-                print("move");
-            }
             sharks[i].move();
         } else {
-            if (frameCount % 60 === 0) {
-                print("jump");
-            }
             sharks[i].jump(charX, charY);
         }
 
         sharks[i].draw();
-
-        // stroke(255);
-        // noFill();
-        // strokeWeight(10);
-        // curve(sharks[i].kx, sharks[i].ky + 200, sharks[i].kx, sharks[i].ky, charX, charY, charX, charY + 200);
     }
 
     // die
-    if (maxShipup >= 20 || minShipup <= -20) {
+    if (volume >= 600) {
         charSize = 0.0001;
         boatReversed = true;
     }
@@ -683,10 +670,10 @@ function setBackground() {
 
     let angle = (timer % 400) * 360 / 400;
 
-    let x1 = width / 2 + cos( 90 - 125 * 360 / 400 + angle) * width / 5;
-    let y1 = height / 2 + height / 8 + sin( 90 - 125 * 360 / 400 + angle) * width / 5;
-    let x2 = width / 2 + cos( 270 - 125 * 360 / 400 + angle) * width / 5;
-    let y2 = height / 2 + height / 8 + sin( 270 - 125 * 360 / 400 + angle) * width / 5;
+    let x1 = width / 2 + cos( 90 - 125 * 360 / 400 + angle) * width / 3;
+    let y1 = height / 2 + height / 8 + sin( 90 - 125 * 360 / 400 + angle) * width / 3;
+    let x2 = width / 2 + cos( 270 - 125 * 360 / 400 + angle) * width / 3;
+    let y2 = height / 2 + height / 8 + sin( 270 - 125 * 360 / 400 + angle) * width / 3;
 
     noStroke();
     fill(255, 165, 0, 50);
