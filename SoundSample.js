@@ -1,12 +1,15 @@
 class Shark {
     anger = 0;
+    count = 0;
+    vcount = 1;
 
-    constructor(size, x, y, vx, vy) {
+    constructor(size, x, y, vx, vy, angle) {
         this.size = size;
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
+        this.angle = angle;
     }
 
     setAnger(anger) {
@@ -21,33 +24,35 @@ class Shark {
         angleMode(DEGREES);
         noStroke();
 
+        translate(this.x, this.y);
+        rotate(this.angle);
+
         fill('#FFFFFF');
 
         let direction;
-        if (this.vx > 0) direction = 1;
+        if (this.vx >= 0) direction = 1;
         else direction = -1;
 
         let t = tan(15) + tan(20);
-        let cx = this.x + direction * this.size * cos(10) - direction * this.size * sin(10) + 2 * direction * this.size * sin(10);
-        let cy = this.y - this.size * tan(15) / t + this.size * sin(10) + this.size * cos(10) - 2 * this.size * cos(10);
+        let cx = direction * this.size * cos(10) - direction * this.size * sin(10) + 2 * direction * this.size * sin(10);
+        let cy = -this.size * tan(15) / t + this.size * sin(10) + this.size * cos(10) - 2 * this.size * cos(10);
 
         let px = [
-            this.x - direction * this.size / t,
-            this.x,
-            this.x + direction * this.size * cos(10),
+            - direction * this.size / t,
+            0,
+            direction * this.size * cos(10),
             cx + 2 * direction * this.size * cos(40),
-            this.x + direction * this.size * cos(10) - direction * this.size * sin(10),
-            this.x
+            direction * this.size * cos(10) - direction * this.size * sin(10),
+            0
         ];
 
-
         let py = [
-            this.y,
-            this.y - this.size * tan(15) / t,
-            this.y - this.size * tan(15) / t + this.size * sin(10),
+            0,
+            -this.size * tan(15) / t,
+            -this.size * tan(15) / t + this.size * sin(10),
             cy + 2 * this.size * sin(40),
-            this.y - this.size * tan(15) / t + this.size * sin(10) + this.size * cos(10),
-            this.y + this.size * tan(20) / t
+            -this.size * tan(15) / t + this.size * sin(10) + this.size * cos(10),
+            this.size * tan(20) / t
         ]
 
         fill('#888888')
@@ -63,16 +68,25 @@ class Shark {
         }
 
         // fin
-        triangle(px[4], py[4], px[4] - direction * this.size / 2, py[4] - this.size / 2, px[4] - direction * this.size / 2, py[4] + this.size / 2.5);
+
+        // front leg
+        let level = map(this.count, 0, 100, 1, 2);
+        let level2 = map(this.count, 0, 100, 1, 1.3);
+        triangle(px[4], py[4], px[4] - direction * this.size / 2, py[4] - this.size / 2, px[4] - direction * this.size / level, py[4] + this.size / 2.5);
         fill('#888888')
+        // rear leg
+        triangle(px[5], py[5], px[5] - direction * this.size / level2, py[5] + this.size / 3, px[5] - direction * this.size / 4, py[5] - this.size / 4);
         triangle(px[1] - direction * this.size / 4, py[1] - this.size / 2, px[1] - direction * this.size / 2, py[1] + this.size / 3, px[1] + direction * this.size/ 2, py[1] + this.size / 3);
-        triangle(px[5], py[5], px[5] - direction * this.size, py[5] + this.size / 3, px[5] - direction * this.size / 4, py[5] - this.size / 4);
 
         // gray
         let gray_x = cx + 2 * direction * this.size * cos(43);
         let gray_y = cy + 2 * this.size * sin(43);
         quad(px[1], py[1], px[1] + direction * this.size / 4, (2 * py[1] + py[5]) / 3, px[1] + direction * this.size / 4, (py[1] + 2 * py[5]) / 3, px[5], py[5]);
         quad(px[1], py[1], px[3], py[3], gray_x, gray_y, px[1] + direction * this.size / 4, (py[1] + 2 * py[5]) / 3)
+
+        fill('#FF0000');
+        circle(px[4] - direction * this.size / level, py[4] + this.size / 2.5, 10);
+
         fill('#888888')
 
         // tail
@@ -85,7 +99,7 @@ class Shark {
 
         // mouth
         fill('#FF0000');
-        if (this.vx > 0) {
+        if (this.vx >= 0) {
             arc(cx, cy, this.size * 4, this.size * 4, 50, 60, CHORD);
         } else {
             arc(cx, cy, this.size * 4, this.size * 4, 120, 130, CHORD);
@@ -108,7 +122,7 @@ class Shark {
     move() {
         this.x += this.vx;
         this.y += this.vy;
-
+        this.count += this.vcount;
         if (this.x < 0 || this.x > windowWidth) {
             this.vx = -this.vx;
         }
@@ -116,32 +130,38 @@ class Shark {
         if (this.y < 0 || this.y > windowHeight) {
             this.vy = -this.vy;
         }
+
+        if (this.count > 100 || this.count < 0) {
+            this.vcount = -this.vcount;
+        }
     }
 }
 
 let sharks = [];
+let size = 100;
 
 function setup(){
     createCanvas(windowWidth, windowHeight);
     background(30, 10, 100);
 
+    let shark = new Shark(size, width / 2, height / 2,  0, 0, 0);
+    sharks.push(shark);
+
 }
+
+let cnt = 0;
 
 function draw(){
     background(30, 10, 100);
-    let shark = new Shark(getRandomInt(10, 60), mouseX, mouseY, random(-2, 2), random(-2, 2));
+    // let shark = new Shark(100, mouseX, mouseY, 1, random(-2, 2), (frameCount) % 360);
 
-    if (frameCount < 50 && frameCount % 5 === 0) {
-        sharks.push(shark);
-    }
+    sharks[0].move();
+    sharks[0].draw();
 
-    for (let i = 0; i < sharks.length; i++) {
-        sharks[i].move();
-        sharks[i].draw();
-
-    }
 
 }
+
+let beforeAngle = 0;
 
 function mousePressed() {
 }
