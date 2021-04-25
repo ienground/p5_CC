@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d70e72c5-16ed-4bd4-972f-4e133c383f08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sun.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +66,7 @@
       <workItem from="1618741198453" duration="5137000" />
       <workItem from="1619111743312" duration="17005000" />
       <workItem from="1619243532414" duration="24318000" />
-      <workItem from="1619336210658" duration="13775000" />
+      <workItem from="1619336210658" duration="14581000" />
     </task>
     <task id="LOCAL-00001" summary="210424_p5_CC&#10;Shark Animation">
       <created>1619329987633</created>
@@ -105,7 +103,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619347517815</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="210424_p5_CC&#10;Add Person, sun, moon, skylight.">
+      <created>1619355011371</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1619355011371</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,7 +135,8 @@
     <MESSAGE value="210424_p5_CC&#10;구름 합침" />
     <MESSAGE value="210424_p5_CC&#10;바다 + 배 합침." />
     <MESSAGE value="210424_p5_CC&#10;상어 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;상어 추가" />
+    <MESSAGE value="210424_p5_CC&#10;Add Person, sun, moon, skylight." />
+    <option name="LAST_COMMIT_MESSAGE" value="210424_p5_CC&#10;Add Person, sun, moon, skylight." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

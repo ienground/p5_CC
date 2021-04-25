@@ -211,9 +211,6 @@ class Shark {
         this.y += this.vy;
         this.count += this.vcount;
 
-        let preVx = this.vx;
-        let preVy = this.vy;
-
         if (this.x < 0 || this.x > width) {
             this.vx = -this.vx;
         }
@@ -236,13 +233,9 @@ class Ship {
         this.wave2 = wave2;
     }
 
-    move() {
-
-    }
-
     render() {
         push();
-        translate(width / 2, height / 2);
+        translate(width / 2, height / 1.9);
 
         angleMode(RADIANS);
         if (this.wave1 > this.wave2) {
@@ -469,7 +462,6 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-
     navy = color('#070728');
     orange = color('#EA8B16')
     blue = color('#1E78F0')
@@ -480,15 +472,11 @@ function setup() {
     }
 
     for (let i = 0; i < 3; i++) {
-        sharks.push(new Shark(35, 500, 500, random(-10, 10), random(-10, 10), 0));
+        sharks.push(new Shark(35, width / 2, height / 2 + height / 4, random(-10, 10), random(-10, 10), 0));
     }
 
     sun = new Sun(width / 2, height / 2 + height / 8);
     moon = new Moon(width / 2, height / 2 + height / 8);
-
-    for (let i = 0; i < sharks.length; i++) {
-        print(i + ":" + sharks[i].x + ", " + sharks[i].y);
-    }
 
     // Sound Setting
     mic = new p5.AudioIn();
@@ -507,6 +495,7 @@ function draw() {
         timer++;
     }
 
+    // set background and environment
     setBackground();
     sun.update(timer);
     sun.draw();
@@ -533,8 +522,9 @@ function draw() {
 
     for (let i = 0; i < 10; i++) {
         shipMove[i] = new Ship(shipup, wave1, wave2);
-        charMove[i] = new Simpson(width / 2, 350 + shipup, 0.33, 0);
+        charMove[i] = new Simpson(width / 2, 350 / 658 * height + shipup, 0.33, 0);
         // charMove[i] = new Simpson(width / 2, 90 + this.shy * 2, 0.33, 0);
+
     }
 
     for (let char of charMove) {
