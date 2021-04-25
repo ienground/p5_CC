@@ -7,7 +7,7 @@
  */
 
 let navy, orange, blue, sky;
-let timer = 125;
+let timer = 0;
 let sharks = [];
 let sharksJump = [];
 let clouds = [];
@@ -184,7 +184,7 @@ class Shark {
         }
         fill(0);
         noStroke();
-        text(this.anger, 0, 0);
+        // text(this.anger, 0, 0);
         rotate(-this.angle);
         translate(-this.x, -this.y);
 
@@ -226,8 +226,11 @@ class Shark {
             if (this.i <= 10) {
                 let t = this.i / 10;
 
-                let x = bezierPoint(this.kx, (this.kx + px) * 0.6, (this.kx + px) * 0.6, px, t);
-                let y = bezierPoint(this.ky, abs(this.ky - py) / 2, abs(this.ky - py) / 2, py, t);
+                // let x = bezierPoint(this.kx, (this.kx + px) * 0.6, (this.kx + px) * 0.6, px, t);
+                // let y = bezierPoint(this.ky, abs(this.ky - py) / 2, abs(this.ky - py) / 2, py, t);
+
+                let x = curvePoint(this.kx, this.kx, px, px, t);
+                let y = curvePoint(this.ky + 200, this.ky, py, py + 200, t);
 
                 this.x = x;
                 this.y = y;
@@ -536,7 +539,7 @@ function draw() {
         shipMove[i] = new Ship(2 * shipup, wave1, wave2, boatReversed);
         charMove[i] = new Simpson(width / 2, 370 / 658 * height + 2 * shipup, charSize, 0);
         fill(0);
-        text(shipup, width / 2 - 200, height / 2);
+        // text(shipup, width / 2 - 200, height / 2);
 
         if (shipup >= maxShipup) {
             maxShipup = shipup;
@@ -602,6 +605,11 @@ function draw() {
         }
 
         sharks[i].draw();
+
+        // stroke(255);
+        // noFill();
+        // strokeWeight(10);
+        // curve(sharks[i].kx, sharks[i].ky + 200, sharks[i].kx, sharks[i].ky, charX, charY, charX, charY + 200);
     }
 
     // die
@@ -699,8 +707,4 @@ function setCloud() {
         clouds[i].move();
         clouds[i].display();
     }
-}
-
-function drawBezier(x1, y1, x2, y2) {
-    bezier(x1, y1, (x1 + x2) / 2, abs(y1 - y2) / 2, (x1 + x2) / 2, abs(y1 - y2) / 2, x2, y2);
 }
