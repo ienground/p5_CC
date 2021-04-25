@@ -84,9 +84,6 @@ class Shark {
         quad(px[1], py[1], px[1] + direction * this.size / 4, (2 * py[1] + py[5]) / 3, px[1] + direction * this.size / 4, (py[1] + 2 * py[5]) / 3, px[5], py[5]);
         quad(px[1], py[1], px[3], py[3], gray_x, gray_y, px[1] + direction * this.size / 4, (py[1] + 2 * py[5]) / 3)
 
-        fill('#FF0000');
-        circle(px[4] - direction * this.size / level, py[4] + this.size / 2.5, 10);
-
         fill('#888888')
 
         // tail
