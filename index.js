@@ -12,13 +12,13 @@ let sharks = [];
 let sharksJump = [];
 let clouds = [];
 
-let sound1;
 let mic, fft, amp;
 let shipup;
 let shipMove = [];
 let charMove = [];
 let charSize = 0.33;
 let boatReversed = false;
+let gameOver = false;
 
 class Cloud {
     p = 0;
@@ -242,7 +242,6 @@ class Shark {
                 boatReversed = true;
                 charSize = 0.0001;
             }
-            // dk
         }
     }
 }
@@ -257,7 +256,8 @@ class Ship {
 
     render() {
         push();
-        translate(width / 2, height / 1.9);
+        let y = height / 2 + height / 20;
+        translate(width / 2, y);
         angleMode(RADIANS);
         if (this.wave1 > this.wave2) {
             rotate(this.wave2 - this.wave1);
@@ -283,7 +283,7 @@ class Ship {
         }
         endShape();
 
-        translate(-width / 2, -height / 2);
+        translate(-width / 2, -y);
         if (this.wave1 <= this.wave2) {
             rotate(this.wave2 - this.wave1);
         } else {
@@ -477,7 +477,8 @@ class Simpson {
 }
 
 function preload() {
-    sound1 = loadSound('./src/ttan.mp3');
+    // sound1 = loadSound('./src/ttan.mp3');
+    //
 }
 
 function setup() {
@@ -497,6 +498,7 @@ function setup() {
     }
 
     // Sound Setting
+    userStartAudio();
     mic = new p5.AudioIn();
     mic.start();
 
@@ -513,6 +515,10 @@ function draw() {
         timer++;
     }
 
+    if (gameOver) {
+        return;
+    }
+
     // set background and environment
     setBackground();
     fill('#13285a');
@@ -521,16 +527,11 @@ function draw() {
     setCloud();
 
     // wave and boat
-
     let waveform = fft.waveform();
     let wave1 = waveform[500];
     let wave2 = waveform[530];
 
     shipup = map(wave1 * 3, -1, 1, -70, 80);
-
-    // let down = width / 1024;
-    // let wave1_down = down * 511;
-    // let wave2_down = down * 513;
 
     let maxShipup = -1;
     let minShipup = 9999999;
@@ -539,7 +540,6 @@ function draw() {
         shipMove[i] = new Ship(2 * shipup, wave1, wave2, boatReversed);
         charMove[i] = new Simpson(width / 2, 370 / 658 * height + 2 * shipup, charSize, 0);
         fill(0);
-        // text(shipup, width / 2 - 200, height / 2);
 
         if (shipup >= maxShipup) {
             maxShipup = shipup;
@@ -550,18 +550,21 @@ function draw() {
         }
     }
 
+    if (boatReversed && frameCount % 60 === 0) {
+        gameOver = true;
+    }
+
     for (let char of charMove) {
-        char.render()
+        char.render();
     }
 
     for (let ship of shipMove) {
-        ship.render()
+        ship.render();
     }
 
     for (let i = 0; i < waveform.length; i++) {
         let x = map(i, 0, waveform.length, -25, width + 25);
         let y = map(waveform[i] * 3, -1, 1, height / 4 * 3, height / 2);
-        let h = map(waveform[i], -1, 1, 150, 290);
 
         noStroke();
         fill('#00AAFF0D');
@@ -587,7 +590,7 @@ function draw() {
 
     // sharks
     for (let i = 0; i < sharks.length; i++) {
-        if (volume >= 200) {
+        if (volume >= 180) {
             sharks[i].setAnger(sharks[i].getAnger() + 1);
         }
         if (!sharksJump[i]) {
@@ -600,13 +603,14 @@ function draw() {
     }
 
     // die
-    if (volume >= 600) {
+    if (volume >= 200) {
         charSize = 0.0001;
         boatReversed = true;
     }
 
-    // if (maxS)
-
+    fill(255);
+    textAlign(RIGHT);
+    text(timer, width - 50, height - 50);
 }
 
 function setBackground() {
@@ -619,47 +623,47 @@ function setBackground() {
             stroke(color);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 51 && timer % 400 < 100) {
+    } else if (timer % 400 >= 50 && timer % 400 < 100) {
         startColor = lerpColor(orange, navy, (timer % 400) / 50 - 1);
         for (let y = 0; y < height; y++) {
             let color = lerpColor(navy, startColor, y / height);
             stroke(color);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 101 && timer % 400 < 150) {
+    } else if (timer % 400 >= 100 && timer % 400 < 150) {
         for (let y = 0; y < height; y++) {
             stroke(navy);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 151 && timer % 400 < 200) {
+    } else if (timer % 400 >= 150 && timer % 400 < 200) {
         startColor = lerpColor(navy, blue, (timer % 400) / 50 - 3);
         for (let y = 0; y < height; y++) {
             let color = lerpColor(navy, startColor, y / height);
             stroke(color);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 201 && timer % 400 < 250) {
+    } else if (timer % 400 >= 200 && timer % 400 < 250) {
         startColor = lerpColor(navy, blue, (timer % 400) / 50 - 4);
         for (let y = 0; y < height; y++) {
             let color = lerpColor(startColor, blue, y / height);
             stroke(color);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 251 && timer % 400 < 300) {
+    } else if (timer % 400 >= 250 && timer % 400 < 300) {
         startColor = lerpColor(blue, orange, (timer % 400) / 50 - 5);
         for (let y = 0; y < height; y++) {
             let color = lerpColor(blue, startColor, y / height);
             stroke(color);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 301 && timer % 400 < 350) {
+    } else if (timer % 400 >= 300 && timer % 400 < 350) {
         startColor = lerpColor(orange, sky, (timer % 400) / 50 - 6);
         for (let y = 0; y < height; y++) {
             let color = lerpColor(blue, startColor, y / height);
             stroke(color);
             line(0, y, width, y);
         }
-    } else if (timer % 400 >= 351 && timer % 400 < 400) {
+    } else if (timer % 400 >= 350 && timer % 400 < 400) {
         startColor = lerpColor(sky, orange, (timer % 400) / 50 - 7);
         for (let y = 0; y < height; y++) {
             let color = lerpColor(blue, startColor, y / height);
